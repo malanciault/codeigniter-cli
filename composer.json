@@ -1,5 +1,5 @@
 {
-    "name": "kenjis/codeigniter-cli",
+    "name": "malanciault/codeigniter-cli",
     "description": "A command-line tool for CodeIgniter 3.0",
     "keywords": [
         "cli",
@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.4.0",
         "aura/cli-kernel": "~2.0",
         "psr/log": "~1.0.1",
         "monolog/monolog": "^2.3"
