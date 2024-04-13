@@ -17,7 +17,8 @@
     "require": {
         "php": ">=5.4.0",
         "aura/cli-kernel": "~2.0",
-        "monolog/monolog": "~1.0"
+        "psr/log": "~1.0.1",
+        "monolog/monolog": "^2.3"
     },
     "autoload": {
         "psr-4": {
@@ -40,6 +41,6 @@
         }
     },
     "require-dev": {
-        "satooshi/php-coveralls": "0.6.*"
+        "php-coveralls/php-coveralls": "2.7.*"
     }
 }
