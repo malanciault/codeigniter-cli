@@ -27,7 +27,7 @@ class Common extends Config
 
     public function define(Container $di)
     {
-        $di->set('aura/project-kernel:logger', $di->newInstance('Monolog\Logger'));
+        $di->set('aura/project-kernel:logger', $di->newInstance('Monolog\Logger',  ['cli']));
 
         /* @var $ci \CI_Controller */
         $ci =& get_instance();
