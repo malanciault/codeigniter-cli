@@ -61,8 +61,7 @@ class Common extends Config
     {
         $project = $di->get('project');
         $mode = $project->getMode();
-        $file = $project->getPath("tmp/log/{$mode}.log");
-
+        $file = $project->getPath("html/application/logs/{$mode}.log");
         $logger = $di->get('aura/project-kernel:logger');
         $logger->pushHandler($di->newInstance(
             'Monolog\Handler\StreamHandler',
