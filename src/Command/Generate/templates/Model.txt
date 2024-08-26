@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Threel
+ *
+ * Application development framework for PHP
+ *
+ * This content is released under Threel License
+ *
+ * Copyright (c) 2016 - 2022, illuxi
+ * 
+ * The present software and associated documentation files (the "Software"),
+ * is licensed, not sold. 
+ * 
+ * We grant you the right to deal in the Software, to use, copy, modify, and
+ * under the following restrictions:
+ * 
+ * i) This Software is non-exclusive: we are or may be licensing the same code 
+ * to other customers. 
+ * 
+ * ii) This Software is non-transferable: you can not sell your license to
+ * someone else. 
+ * 
+ * iii) This Software is non-redistributable: you can not distribute this code  
+ * in any fashion.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * 
+ * @package Threelci
+ * @author  illuxi
+ * @copyright   Copyright (c) 2016 - 2022, illuxi (https://illuxi.com)
+ * @license Threel License
+ * @link    https://illuxi.com
+ * @since   Version 1.0.0
+ * @filesource
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * @@classname@@
+ *
+ * @package     Threelci
+ * @subpackage  Core
+ * @category    Model
+ * @author      illuxi
+ */
+class @@classname@@ extends CI_model {
+
+    public $audit = true;
+    public $i18n = false;
+
+}

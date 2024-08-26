@@ -1,0 +1,190 @@
+<?php
+
+/**
+ * Threel
+ *
+ * Application development framework for PHP
+ *
+ * This content is released under Threel License
+ *
+ * Copyright (c) 2016 - 2022, illuxi
+ * 
+ * The present software and associated documentation files (the "Software"),
+ * is licensed, not sold. 
+ * 
+ * We grant you the right to deal in the Software, to use, copy, modify, and
+ * under the following restrictions:
+ * 
+ * i) This Software is non-exclusive: we are or may be licensing the same code 
+ * to other customers. 
+ * 
+ * ii) This Software is non-transferable: you can not sell your license to
+ * someone else. 
+ * 
+ * iii) This Software is non-redistributable: you can not distribute this code  
+ * in any fashion.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * 
+ * @package Threelci
+ * @author  illuxi
+ * @copyright   Copyright (c) 2016 - 2022, illuxi (https://illuxi.com)
+ * @license Threel License
+ * @link    https://illuxi.com
+ * @since   Version 1.0.0
+ * @filesource
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/**
+ * @@classname@@
+ *
+ * @package     Threelci
+ * @subpackage  Core
+ * @category    Controller
+ * @author      illuxi
+ */
+class @@Item@@ extends MY_Controller {
+
+    public $global_access = array('super-admin');
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('datatable'); // loaded my custom serverside datatable library
+        $this->load->model('@@item@@_model');
+    }
+
+    public function index()
+    {
+        $data['title'] = '@@Item@@s';
+        $data['class'] = '@@item@@';
+        $data['cur_tab'] = 'products';
+        $data['view'] = 'admin/@@item@@/@@item@@_list';
+        $this->load_admin_full_template($data);
+    }
+
+    public function view()
+    {
+        $@@item@@= $this->@@item@@_model->get_for_edit($this->uri->segment(4));
+        $data['page_title'] = '@@item@@';
+        $data['record'] = $this->@@item@@_model->get_for_edit($this->uri->segment(4));
+        $data['record_id'] = $this->uri->segment(4);
+
+        $data['class'] = '@@item@@';
+        $data['cur_tab'] = 'products';
+        $data['view'] = 'admin/@@item@@/@@item@@_view';
+        $this->load_admin_full_template($data);
+    }
+
+    public function datatable_json()
+    {
+        $records = $this->@@item@@_model->get_all_jason();
+        $columns = array('@@item@@_id', '@@item@@_name', '@@item@@_description');
+
+        $records['data'] = $this->datatable->transformThreelDataset('@@item@@', $records, $columns, array('view', 'edit'), true);
+        
+        echo json_encode($records);
+    }
+
+    public function add($op = 'add', $lang = 'default')
+    {
+        $data['model'] = $this->@@item@@_model;
+        if (!$this->input->post('op') OR !$this->post()) {            
+
+            $data['op'] = $this->input->post('op') ? $this->input->post('op') : $op;
+            $data['lang'] = $lang;
+            $data['languages'] = $this->language_model->get_all();
+
+            if ($data['op'] == 'edit' OR $data['op'] == 'edit_ml') {
+                $data['record_id'] = $this->input->post('@@item@@_id') ? $this->input->post('@@item@@_id') : $this->uri->segment(4);;
+                $data['record'] = $this->@@item@@_model->get_for_edit($data['record_id'], $lang);
+                $data['page_title'] = 'Modifier un @@item@@';
+                $data['form_button'] = 'Modifier le @@item@@';
+            } else {
+                $data['page_title'] = 'Ajouter un @@item@@';
+                $data['form_button'] = 'Ajouter le @@item@@';
+                if ($this->session->flashdata('form_data')) {
+                    $data['record'] = $this->session->flashdata('form_data');
+                }
+            }
+
+            $data['cur_tab'] = 'products';
+            $data['view'] = 'admin/forms/item_add';
+            $this->load_admin_full_template($data);
+        }
+    }
+
+    public function edit()
+    {
+        $this->add('edit');
+    }
+
+    public function edit_ml()
+    {
+        $this->add('edit_ml', $this->uri->segment(5));
+    }
+
+    public function post()
+    {   
+        $op = $this->input->post('op');
+        $lang = $this->input->post('lang');
+
+        if ($op != 'edit_ml') {
+            $this->form_validation->set_rules('@@item@@_name', "Nom", 'required');
+        }
+        $this->form_validation->set_rules('@@item@@_i18n_template_id', "Identifiant du template", 'required');
+
+    
+        if ($this->form_validation->run() == FALSE) {
+            return false;
+        } else {
+            $data = array(
+                '@@item@@_i18n_language_id' => $this->input->post('@@item@@_i18n_language_id'),
+            );
+            if ($lang == 'default') {
+                $data = array_merge($data, array(
+                    '@@item@@_name' => $this->input->post('@@item@@_name'),
+                    '@@item@@_description' => $this->input->post('@@item@@_description'),
+                    )
+                );
+            }
+
+            if ($op == 'edit') {
+                $@@item@@_id = $this->input->post('@@item@@_id');
+                $result = $this->@@item@@_model->update($@@item@@_id, $data, true);
+                $feedback = 'Le @@item@@ a été modifié !';
+            } elseif ($op == 'edit_ml') {
+                $result = $this->@@item@@_model->update_lang($this->input->post('@@item@@_id'), $lang, $data);
+                $feedback = 'Le @@item@@ a été modifié !';
+            } else {
+                $result = $this->@@item@@_model->insert($data, true);
+                $feedback = 'Le @@item@@ a été ajouté !';
+            }
+            $data['op'] = $op;
+            if ($result) {
+                $this->session->set_flashdata('msg', $feedback);
+                redirect(base_url('admin/@@item@@'));
+            } else {
+                show_error('@@item@@ save failed');
+            }
+        }
+    }
+
+    public function delete($@@item@@_id)
+    {
+        $@@item@@ = $this->@@item@@_model->get($@@item@@_id);
+        $data = array(
+            '@@item@@_status' => 'deleted',
+        );
+        $@@item@@ = $this->@@item@@_model->update($@@item@@_id, $data, true);
+        $this->session->set_flashdata('msg', 'Le @@item@@ a été supprimé.');
+        redirect(base_url('admin/@@item@@'));
+    }
+}
