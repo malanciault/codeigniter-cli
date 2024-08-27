@@ -24,15 +24,15 @@ class Migrate extends Command
         $this->load->library('migration');
         $this->load->config('migration');
 
-        if ($command === 'status') {
-            $this->listMigrationFiles();
-            return;
-        }
+        // if ($command === 'status') {
+        //     $this->listMigrationFiles();
+        //     return;
+        // }
 
-        if ($command === 'version') {
-            $this->showVersions();
-            return;
-        }
+        // if ($command === 'version') {
+        //     $this->showVersions();
+        //     return;
+        // }
 
         // if argument is digits, migrate to the version
         if (ctype_digit($command)) {
@@ -52,14 +52,15 @@ class Migrate extends Command
         }
 
         // if no argument, migrate to current
-        if ($this->migration->current() === false) {
+        $this->load->library('auditlog');
+        if ($this->migration->latest()) {
+            $this->showVersions();
+        } else {
             $this->stdio->errln(
                 '<<red>>' . $this->migration->error_string() . '<<reset>>'
             );
             return Status::FAILURE;
-        } else {
-            $this->showVersions();
-        }
+        }        
     }
 
     private function migrateToVersion($version)
@@ -76,7 +77,7 @@ class Migrate extends Command
 
     private function getDbVersion()
     {
-        $row = $this->db->select('version')->get($this->config->item('migration_table'))->row();
+        $row = $this->db->select('migration_version')->get($this->config->item('migration_table'))->row();
         return $row ? $row->version : '0';
     }
 
