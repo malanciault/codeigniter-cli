@@ -78,7 +78,7 @@ class Migrate extends Command
     private function getDbVersion()
     {
         $row = $this->db->select('migration_version')->get($this->config->item('migration_table'))->row();
-        return $row ? $row->version : '0';
+        return $row ? $row->migration_version : '0';
     }
 
     private function showVersions()

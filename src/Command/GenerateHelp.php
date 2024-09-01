@@ -12,19 +12,18 @@ namespace Kenjis\CodeIgniter_Cli\Command;
 
 use Aura\Cli\Help;
 
-class MigrateHelp extends Help
+class GenerateHelp extends Help
 {
     public function init()
     {
-        $this->setSummary('Runs the migrations.');
+        $this->setSummary('Generate code.');
+        $this->setUsage('migration <classname>');
         $this->setUsage([
-            '            Migrate up to the current version.',
-            // '<version>   Migrate up to the version.',
-            // 'status      List all migration files and versions.',
-            // 'version     Show migration versions.'
+            'migration <classname>  Generate migration file skeleton',
         ]);
         $this->setDescr(
-            '<<bold>>migrate<<reset>> command runs the migrations and shows its status.' . PHP_EOL
+            '<<bold>>generate<<reset>> command generates code.' . PHP_EOL
+            . '        eg, generate migration Create_user_table'
         );
     }
 }

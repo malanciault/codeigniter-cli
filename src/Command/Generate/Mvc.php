@@ -20,7 +20,7 @@ use CI_Controller;
  * @property \CI_Loader $load
  * @property \CI_Config $config
  */
-class Model extends Command
+class Mvc extends Command
 {
     public function __construct(Context $context, Stdio $stdio, CI_Controller $ci)
     {
@@ -45,7 +45,7 @@ class Model extends Command
         }
 
         // Create files
-        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file($this->stdio, ['model', 'migration'], $item)) {
+        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file($this->stdio, ['model', 'migration', 'controller', 'view'], $item)) {
             return Status::FAILURE;
         }
     }

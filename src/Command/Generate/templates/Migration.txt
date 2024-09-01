@@ -9,44 +9,83 @@ class Migration_@@classname@@ extends CI_Migration {
 
 	public function up()
 	{
-//		// Creating a table
-//		$this->dbforge->add_field(array(
-//			'blog_id' => array(
-//				'type' => 'INT',
-//				'constraint' => 11,
-//				'auto_increment' => TRUE
-//			),
-//			'blog_title' => array(
-//				'type' => 'VARCHAR',
-//				'constraint' => 100,
-//			),
-//			'blog_author' => array(
-//				'type' =>'VARCHAR',
-//				'constraint' => '100',
-//				'default' => 'King of Town',
-//			),
-//			'blog_description' => array(
-//				'type' => 'TEXT',
-//				'null' => TRUE,
-//			),
-//		));
-//		$this->dbforge->add_key('blog_id', TRUE);
-//		$this->dbforge->create_table('blog');
+		// @@item@@ table
+		$fields = [
+			'@@item@@_id' => [
+				'type' => 'INT',
+				'constraint' => 11,
+				'auto_increment' => TRUE
+			],
+			'@@item@@_name' => [
+				'type' => 'VARCHAR',
+				'constraint' => 255,
+			],
+			'@@item@@_org_id' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'@@item@@_created_date' => [
+				'type' => 'DATETIME',
+			],
+			'@@item@@_created_by_user_id' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+			'@@item@@_updated_date' => [
+				'type' => 'DATETIME',
+			],
+			'@@item@@_updated_by_user_id' => [
+				'type' => 'INT',
+				'constraint' => '11'
+			],
+		];
 
-//		// Adding a Column to a Table
-//		$fields = array(
-//			'preferences' => array('type' => 'TEXT')
-//		);
-//		$this->dbforge->add_column('table_name', $fields);
+		$this->dbforge->add_key('@@item@@_id', true);
+		$this->dbforge->add_field($fields);
+		$this->dbforge->create_table('@@item@@');
+
+		$query = $this->db->query("
+			ALTER TABLE `@@item@@` ADD CONSTRAINT `fk_@@item@@_org_id` FOREIGN KEY (`@@item@@_org_id`) REFERENCES `org`(`org_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+		");
+		$query = $this->db->query("
+			ALTER TABLE `@@item@@` ADD CONSTRAINT `fk_@@item@@_created_by_user_id` FOREIGN KEY (`@@item@@_created_by_user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+		");
+		$query = $this->db->query("
+			ALTER TABLE `@@item@@` ADD CONSTRAINT `fk_@@item@@_updated_by_user_id` FOREIGN KEY (`@@item@@_updated_by_user_id`) REFERENCES `user`(`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+		");
+
+		// @@item@@_i18n table
+		$fields = [
+			'@@item@@_i18n_id' => [
+				'type' => 'INT',
+				'constraint' => 11,
+				'auto_increment' => TRUE
+			],
+			'@@item@@_i18n_language_id' => [
+				'type' => 'VARCHAR',
+				'constraint' => 10,
+			],
+			'@@item@@_i18n_@@item@@_id' => [
+				'type' => 'INT',
+				'constraint' => 11,
+			],
+		];
+
+		$this->dbforge->add_key('@@item@@_i18n_id', true);
+		$this->dbforge->add_field($fields);
+		$this->dbforge->create_table('@@item@@_i18n');
+
+		$query = $this->db->query("
+			ALTER TABLE `@@item@@_i18n` ADD CONSTRAINT `fk_@@item@@_i18n_@@item@@_id` FOREIGN KEY (`@@item@@_i18n_@@item@@_id`) REFERENCES `@@item@@`(`@@item@@_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+		");
+		$query = $this->db->query("
+			ALTER TABLE `@@item@@_i18n` ADD CONSTRAINT `fk_@@item@@_i18n_language_id` FOREIGN KEY (`@@item@@_i18n_language_id`) REFERENCES `language`(`language_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+		");
 	}
 
 	public function down()
 	{
-//		// Dropping a table
-//		$this->dbforge->drop_table('blog');
 
-//		// Dropping a Column From a Table
-//		$this->dbforge->drop_column('table_name', 'column_to_drop');
 	}
 
 }
