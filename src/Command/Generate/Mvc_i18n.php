@@ -20,7 +20,7 @@ use CI_Controller;
  * @property \CI_Loader $load
  * @property \CI_Config $config
  */
-class Migration extends Command
+class Mvc_i18n extends Command
 {
     public function __construct(Context $context, Stdio $stdio, CI_Controller $ci)
     {
@@ -32,26 +32,27 @@ class Migration extends Command
      * @param string $type
      * @param string $classname
      */
-    public function __invoke($type, $classname)
+    public function __invoke($type, $item)
     {
-        if ($classname === null) {
+        if ($item === null) {
             $this->stdio->errln(
-                '<<red>>Classname is needed<<reset>>'
+                '<<red>>Model name is needed<<reset>>'
             );
             $this->stdio->errln(
-                '  eg, generate migration CreateUserTable'
+                '  eg, generate model New_model'
             );
             return Status::USAGE;
         }
 
+        // Create files
         if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file(
-            $this->stdio,
-            [
-                'type' => ['migration'],
-                'item' => $classname,
-                'migration_name' => $classname
-            ]
-        )) {
+                $this->stdio,
+                [
+                    'type' => ['model', 'migration', 'controller', 'view'],
+                    'item' => $item,
+                    'ml' => true,
+                ]
+            )) {
             return Status::FAILURE;
         }
     }

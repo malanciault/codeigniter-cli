@@ -45,7 +45,13 @@ class Model extends Command
         }
 
         // Create files
-        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file($this->stdio, ['model', 'migration'], $item)) {
+        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file(
+            $this->stdio,
+            [
+                'type' => ['model', 'migration'],
+                'item' => $item
+            ]
+        )) {
             return Status::FAILURE;
         }
     }

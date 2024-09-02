@@ -45,7 +45,14 @@ class Mvc extends Command
         }
 
         // Create files
-        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file($this->stdio, ['model', 'migration', 'controller', 'view'], $item)) {
+        if (!\Kenjis\CodeIgniter_Cli\Generator::generate_file(
+                $this->stdio,
+                [
+                    'type' => ['model', 'migration', 'controller', 'view'],
+                    'item' => $item,
+                    'ml' => false,
+                ]
+            )) {
             return Status::FAILURE;
         }
     }
