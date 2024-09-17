@@ -65,7 +65,11 @@ class Generator
                 if (!$migration_name) {
                     $migration_name = "model_$item";
                 }
-                $class_filename = date('YmdHis') . '_' . $migration_name;
+                
+                $date = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
+                $date->setTimezone(new \DateTimeZone('America/Toronto'));
+
+                $class_filename = $date->format('YmdHis') . '_' . $migration_name;
                 $classname = $migration_name;
                 $files = array(
                     APPPATH  . "migrations/$class_filename.php"
