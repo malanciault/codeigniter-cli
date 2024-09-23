@@ -39,15 +39,29 @@ class Generator
         switch($type) {
             case 'model':
                 $classname = ucfirst($item) . '_model';
+                $blueprint_name = ucfirst($item) . '_blueprint';
                 $files = array(
-                    $file_path = APPPATH  . 'models/' . $classname . '.php'
+                    [
+                        'element' => 'model',
+                        'path' => APPPATH  . 'models/' . $classname . '.php',
+                        'template' => 'model.txt'
+                    ],
+                    [
+                        'element' => 'blueprint',
+                        'path' => APPPATH  . 'models/blueprints/' . $blueprint_name . '.php',
+                        'template' => 'blueprint.txt'
+                    ],
                 );
                 break;
             
             case 'controller':
                 $classname = ucfirst($item);
                 $files = array(
-                    APPPATH  . 'controllers/admin/' . $classname . '.php'
+                    [
+                        'element' => 'controller',
+                        'path' => APPPATH  . 'controllers/admin/' . $classname . '.php',
+                        'template' => 'controller.txt'
+                    ]
                 );
                 break;
 
@@ -58,6 +72,23 @@ class Generator
                     APPPATH  . 'views/admin/' . $item . '/' . $item . '_add.php',
                     APPPATH  . 'views/admin/' . $item . '/' . $item . '_list.php',
                     APPPATH  . 'views/admin/' . $item . '/' . $item . '_view.php',
+                );
+                $files = array(
+                    [
+                        'element' => 'add',
+                        'path' => APPPATH  . 'views/admin/' . $item . '/' . $item . '_add.php',
+                        'template' => 'add.txt'
+                    ],
+                    [
+                        'element' => 'view',
+                        'path' => APPPATH  . 'views/admin/' . $item . '/' . $item . '_view.php',
+                        'template' => 'view.txt'
+                    ],
+                    [
+                        'element' => 'list',
+                        'path' => APPPATH  . 'views/admin/' . $item . '/' . $item . '_list.php',
+                        'template' => 'list.txt'
+                    ]
                 );
                 break;
 
@@ -72,9 +103,12 @@ class Generator
                 $class_filename = $date->format('YmdHis') . '_' . $migration_name;
                 $classname = $migration_name;
                 $files = array(
-                    APPPATH  . "migrations/$class_filename.php"
+                    [
+                        'element' => 'migration',
+                        'path' => APPPATH  . "migrations/$class_filename.php",
+                        'template' => 'Migration' . ($ml ? '_ml' : '') . '.txt'
+                    ]
                 );
-                $template_file = 'Migration' . ($ml ? '_ml' : '');
                 break;
             default:
                 $stdio->errln(
@@ -82,20 +116,15 @@ class Generator
                 );
                 return false;
         }
-        foreach($files as $file_path) {
+        foreach($files as $file) {
             // check file exist
-            if (file_exists($file_path)) {
+            if (file_exists($file['path'])) {
                 $stdio->errln(
-                    "<<red>>The file \"$file_path\" already exists<<reset>>"
+                    "<<red>>The file \"{$file['path']}\" already exists<<reset>>"
                 );
                 return false;
             }
-
-            if ($template_file) {
-                $template = file_get_contents(APPPATH . 'Commands/Generate/templates/' . ucfirst($template_file) . '.txt');
-            } else {
-                $template = file_get_contents(APPPATH . 'Commands/Generate/templates/' . ucfirst($type) . '.txt');
-            }
+            $template = file_get_contents(APPPATH . 'Commands/Generate/templates/' . $file['template']);
             
             $search = [
                 '@@classname@@',
@@ -111,14 +140,15 @@ class Generator
                 ucfirst($item),
                 ($ml ? 'true' : 'false'),
             ];
+
             $output = str_replace($search, $replace, $template);
-            $generated = @file_put_contents($file_path, $output, LOCK_EX);
+            $generated = @file_put_contents($file['path'], $output, LOCK_EX);
 
             if ($generated !== false) {
-                $stdio->outln('<<green>>Generated: ' . $file_path . '<<reset>>');
+                $stdio->outln('<<green>>Generated: ' . $file['path'] . '<<reset>>');
             } else {
                 $stdio->errln(
-                    "<<red>>Can't write to \"$file_path\"<<reset>>"
+                    "<<red>>Can't write to \"{$file['path']}\"<<reset>>"
                 );
                 return false;
             }
