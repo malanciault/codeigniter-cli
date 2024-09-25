@@ -136,7 +136,7 @@ class Generator
             $replace = [
                 $classname,
                 date('Y/m/d H:i:s'),
-                str_contains($classname, 'model_') ? $item : 'item',
+                $item,
                 ucfirst($item),
                 ($ml ? 'true' : 'false'),
             ];
