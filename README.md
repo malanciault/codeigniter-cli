@@ -10,7 +10,7 @@ This package provides a Cli tool for [CodeIgniter](https://github.com/bcit-ci/Co
 
 This includes a few commands and you can create your commands easily.
 
-This is based on Aura.Cli_Project 2.0.
+This is based on Aura.Cli_Project 2.0. 
 
 ## Included Commands
 
