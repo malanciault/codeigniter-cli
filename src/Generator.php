@@ -21,9 +21,9 @@ class Generator
         $item = get_array_value($options, 'item');
         $ml = get_array_value($options, 'ml');
         $migration_name = get_array_value($options, 'migration_name');
-        
+
         $template_file = false;
-        
+
         if (is_array($type)) {
             foreach($type as $item_type) {
                 $single_file_options = $options;
@@ -35,7 +35,7 @@ class Generator
             }
             return true;
         }
-        
+
         switch($type) {
             case 'model':
                 $classname = ucfirst($item) . '_model';
@@ -53,7 +53,7 @@ class Generator
                     ],
                 );
                 break;
-            
+
             case 'controller':
                 $classname = ucfirst($item);
                 $files = array(
@@ -96,7 +96,7 @@ class Generator
                 if (!$migration_name) {
                     $migration_name = "model_$item";
                 }
-                
+
                 $date = new \DateTime(date("Y-m-d H:i:s"), new \DateTimeZone('UTC'));
                 $date->setTimezone(new \DateTimeZone('America/Toronto'));
 
@@ -124,8 +124,8 @@ class Generator
                 );
                 return false;
             }
-            $template = file_get_contents(APPPATH . 'Commands/Generate/templates/' . $file['template']);
-            
+            $template = file_get_contents(APPPATH . 'commands/Generate/templates/' . $file['template']);
+
             $search = [
                 '@@classname@@',
                 '@@date@@',
